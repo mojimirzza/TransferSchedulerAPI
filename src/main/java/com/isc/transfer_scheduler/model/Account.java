@@ -1,3 +1,4 @@
+
 package com.isc.transfer_scheduler.model;
 
 import jakarta.persistence.*;
@@ -10,7 +11,9 @@ import java.math.BigDecimal;
 
 
 @Entity
-@Table(name = "accounts")
+@Table(name = "accounts", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"\"accountNumber\""}) // Quoted here!
+})
 @Data
 @Builder
 @AllArgsConstructor
@@ -20,7 +23,13 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "\"accountNumber\"") // And here
     private String accountNumber;
+
+    @Column(name = "\"balance\"")
     private BigDecimal balance;
 
+    @Version
+    private Long version;
 }
