@@ -7,12 +7,7 @@ import java.util.Optional;
 
 public interface AccountService {
 
-    Account createAccount(AccountDto accountDto);
+    Account createAccount(AccountDto accountDto, String username); // Add username parameter
 
-    Optional<Account> getAccountById(Long id);
-
-    // Other potential methods:
-    // Account updateAccount(Long id, AccountDto accountDto);
-    // void deleteAccount(Long id);
-    // List<Account> getAllAccounts();
+    Optional<Account> getAccountById(Long id, String username); // Add username parameter
 }
