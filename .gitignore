@@ -35,3 +35,6 @@ build/
 ### profiles ###
 # Ignore staging-specific configuration
 #application-staging.properties
+
+
+.env
