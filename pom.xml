@@ -149,6 +149,14 @@
 <!--				</configuration>-->
 <!--			</plugin>-->
 		</plugins>
-	</build>
 
+	</build>
+	<profiles>
+		<profile>
+			<id>staging</id>
+			<properties>
+				<spring.profiles.active>staging</spring.profiles.active>
+			</properties>
+		</profile>
+	</profiles>
 </project>
