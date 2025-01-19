@@ -19,32 +19,23 @@ public class AccountServiceImpl implements AccountService {
         this.accountRepository = accountRepository;
     }
 
-
     @Override
-    public Account createAccount(AccountDto accountDto) {
+    public Account createAccount(AccountDto accountDto, String username) {
         Account account = new Account();
         account.setAccountNumber(accountDto.getAccountNumber());
         account.setBalance(accountDto.getBalance());
+        account.setUsername(username); // Associate the account with the logged-in user
         logger.info("Account created successfully: " + account);
         return accountRepository.save(account);
     }
 
     @Override
-    public Optional<Account> getAccountById(Long id) {
-        return accountRepository.findById(id);
+    public Optional<Account> getAccountById(Long id, String username) {
+        Optional<Account> account = accountRepository.findById(id);
+        if (account.isPresent() && account.get().getUsername().equals(username)) {
+            return account; // Return the account only if it belongs to the logged-in user
+        } else {
+            return Optional.empty(); // Return empty if the account does not belong to the user
+        }
     }
-
-    // Implement other methods from the interface here if needed
-    /*
-    @Override
-    public Account updateAccount(Long id, AccountDto accountDto) {
-        return accountRepository.findById(id)
-                .map(account -> {
-                    account.setAccountNumber(accountDto.getAccountNumber());
-                    account.setBalance(accountDto.getBalance());
-                    return accountRepository.save(account);
-                })
-                .orElseThrow(() -> new RuntimeException("Account not found")); // Or a custom exception
-    }
-    */
 }
