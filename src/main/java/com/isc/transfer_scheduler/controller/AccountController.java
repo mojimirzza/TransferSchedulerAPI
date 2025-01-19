@@ -69,7 +69,6 @@ public class AccountController {
     }
 }
 
-
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
     @Operation(
