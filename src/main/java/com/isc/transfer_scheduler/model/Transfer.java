@@ -53,4 +53,11 @@ public class Transfer {
     @Version
     @Column(name = "\"version\"")
     private Long version;
+
+
+    @Column(name = "\"errorMessage\"")
+    private String errorMessage;
+
+    @Column(name = "\"retryCount\"")
+    private int retryCount = 0;
 }
