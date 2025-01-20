@@ -8,7 +8,7 @@ RUN mvn clean package -DskipTests
 # Stage 2: Run the application
 FROM eclipse-temurin:21-jdk-jammy
 WORKDIR /app
-COPY --from=build /app/target/transfer-scheduler-0.0.1-SNAPSHOT.jar transfer-scheduler.jar
+COPY --from=build /app/target/transfer-scheduler-*.jar transfer-scheduler.jar
 EXPOSE 8080
 ENV SPRING_PROFILES_ACTIVE=staging
 ENTRYPOINT ["java", "-jar", "transfer-scheduler.jar"]
