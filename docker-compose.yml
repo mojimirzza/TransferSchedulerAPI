@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  transfer-scheduler:
+    image: transfer-scheduler
+    build: .  # Build the Docker image using the Dockerfile in the current directory
+    env_file: .env  # Load environment variables from the .env file
+    ports:
+      - "8080:8080"  # Map port 8080 on the host to port 8080 in the container
