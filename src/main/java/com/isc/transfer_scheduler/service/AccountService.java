@@ -5,9 +5,10 @@ import com.isc.transfer_scheduler.model.Account;
 
 import java.util.Optional;
 
+
+
 public interface AccountService {
-
-    Account createAccount(AccountDto accountDto, String username); // Add username parameter
-
-    Optional<Account> getAccountById(Long id, String username); // Add username parameter
+    Optional<Account> getAccountByIdForUser(Long id, String username); // For source account (with validation)
+    Optional<Account> getAccountByIdWithoutValidation(Long id); // For destination account (no validation)
+    Account createAccount(AccountDto accountDto, String username);
 }

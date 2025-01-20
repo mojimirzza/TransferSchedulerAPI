@@ -88,7 +88,7 @@ class AccountControllerIntegrationTest {
         account.setUsername(username);
 
         // Mock the behavior of the AccountService interface
-        when(accountService.getAccountById(accountId, username)).thenReturn(Optional.of(account));
+        when(accountService.getAccountByIdForUser(accountId, username)).thenReturn(Optional.of(account));
 
         // Act & Assert
         mockMvc.perform(get("/api/v1/accounts/{id}", accountId))
@@ -106,7 +106,7 @@ class AccountControllerIntegrationTest {
         String username = "testuser";
 
         // Mock the behavior of the AccountService interface
-        when(accountService.getAccountById(accountId, username)).thenReturn(Optional.empty());
+        when(accountService.getAccountByIdForUser(accountId, username)).thenReturn(Optional.empty());
 
         // Act & Assert
         mockMvc.perform(get("/api/v1/accounts/{id}", accountId))
@@ -127,7 +127,7 @@ class AccountControllerIntegrationTest {
         account.setUsername("anotheruser"); // Different username
 
         // Mock the behavior of the AccountService interface
-        when(accountService.getAccountById(accountId, username)).thenReturn(Optional.empty());
+        when(accountService.getAccountByIdForUser(accountId, username)).thenReturn(Optional.empty());
 
         // Act & Assert
         mockMvc.perform(get("/api/v1/accounts/{id}", accountId))

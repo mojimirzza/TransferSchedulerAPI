@@ -70,7 +70,7 @@ class AccountServiceImplTest {
         when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
 
         // Act
-        Optional<Account> result = accountService.getAccountById(accountId, username);
+        Optional<Account> result = accountService.getAccountByIdForUser(accountId, username);
 
         // Assert
         assertTrue(result.isPresent());
@@ -88,7 +88,7 @@ class AccountServiceImplTest {
         when(accountRepository.findById(accountId)).thenReturn(Optional.empty());
 
         // Act
-        Optional<Account> result = accountService.getAccountById(accountId, username);
+        Optional<Account> result = accountService.getAccountByIdWithoutValidation(accountId);
 
         // Assert
         assertFalse(result.isPresent());
@@ -110,7 +110,7 @@ class AccountServiceImplTest {
         when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
 
         // Act
-        Optional<Account> result = accountService.getAccountById(accountId, username);
+        Optional<Account> result = accountService.getAccountByIdForUser(accountId, username);
 
         // Assert
         assertFalse(result.isPresent());

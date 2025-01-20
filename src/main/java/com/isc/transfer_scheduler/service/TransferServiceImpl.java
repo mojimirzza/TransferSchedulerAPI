@@ -24,11 +24,13 @@ public class TransferServiceImpl implements TransferService {
 
     @Override
     public Transfer createTransfer(TransferDto transferDto, String username) {
-        // Fetch accounts with username validation
-        Account sourceAccount = accountService.getAccountById(transferDto.getSourceAccountId(), username)
+        // Fetch source account with username validation
+        Account sourceAccount = accountService.getAccountByIdForUser(transferDto.getSourceAccountId(), username)
                 .orElseThrow(() -> new AccountNotFoundException("Source account not found or does not belong to the user."));
-        Account destinationAccount = accountService.getAccountById(transferDto.getDestinationAccountId(), username)
-                .orElseThrow(() -> new AccountNotFoundException("Destination account not found or does not belong to the user."));
+
+        // Fetch destination account without username validation
+        Account destinationAccount = accountService.getAccountByIdWithoutValidation(transferDto.getDestinationAccountId())
+                .orElseThrow(() -> new AccountNotFoundException("Destination account not found."));
 
         // Validate source account balance
         if (sourceAccount.getBalance().compareTo(transferDto.getAmount()) < 0) {
@@ -45,6 +47,6 @@ public class TransferServiceImpl implements TransferService {
         transfer.setCreatedTime(LocalDateTime.now()); // Set creation time
 
         // Save the transfer to the database
-        return transferRepository.save(transfer);
+        return transferRepository.save(transfer); // Use save (which will use merge internally)
     }
 }

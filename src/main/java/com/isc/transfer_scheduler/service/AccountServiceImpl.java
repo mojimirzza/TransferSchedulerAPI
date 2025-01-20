@@ -28,14 +28,29 @@ public class AccountServiceImpl implements AccountService {
         logger.info("Account created successfully: " + account);
         return accountRepository.save(account);
     }
+//
+//    @Override
+//    public Optional<Account> getAccountById(Long id, String username) {
+//        Optional<Account> account = accountRepository.findById(id);
+//        if (account.isPresent() && account.get().getUsername().equals(username)) {
+//            return account; // Return the account only if it belongs to the logged-in user
+//        } else {
+//            return Optional.empty(); // Return empty if the account does not belong to the user
+//        }
+//    }
 
     @Override
-    public Optional<Account> getAccountById(Long id, String username) {
+    public Optional<Account> getAccountByIdForUser(Long id, String username) {
         Optional<Account> account = accountRepository.findById(id);
         if (account.isPresent() && account.get().getUsername().equals(username)) {
             return account; // Return the account only if it belongs to the logged-in user
         } else {
             return Optional.empty(); // Return empty if the account does not belong to the user
         }
+    }
+
+    @Override
+    public Optional<Account> getAccountByIdWithoutValidation(Long id) {
+        return accountRepository.findById(id); // Fetch account without username validation
     }
 }
