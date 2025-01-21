@@ -5,6 +5,7 @@ import com.isc.transfer_scheduler.auth.dto.RegisterRequest;
 import com.isc.transfer_scheduler.auth.model.User;
 import com.isc.transfer_scheduler.auth.repository.UserRepository;
 import com.isc.transfer_scheduler.auth.security.JwtUtils;
+import com.isc.transfer_scheduler.auth.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,13 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
+    private final AuthService authService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
 
-    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository,
+    public AuthController(AuthenticationManager authenticationManager,AuthService authService, UserRepository userRepository,
                           PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
         this.authenticationManager = authenticationManager;
+        this.authService = authService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
@@ -48,11 +51,12 @@ public class AuthController {
     @ApiResponse(responseCode = "200", description = "User registered successfully")
     @ApiResponse(responseCode = "400", description = "Invalid input data")
     public String register(@RequestBody RegisterRequest request) {
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole("ROLE_USER");
-        userRepository.save(user);
+//        User user = new User();
+//        user.setUsername(request.getUsername());
+//        user.setPassword(passwordEncoder.encode(request.getPassword()));
+//        user.setRole("ROLE_USER");
+//        userRepository.save(user);
+         authService.register(request);
         return "User registered successfully!";
     }
 

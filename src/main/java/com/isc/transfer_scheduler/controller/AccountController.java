@@ -88,7 +88,7 @@ public class AccountController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         String username = userDetails.getUsername();
-        Optional<Account> account = accountService.getAccountById(id, username);
+        Optional<Account> account = accountService.getAccountByIdForUser(id, username);
         return account.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

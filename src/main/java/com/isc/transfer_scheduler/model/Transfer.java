@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -22,35 +21,35 @@ public class Transfer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "\"sourceAccountId\"", nullable = false) // Quoted identifier
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // Use CascadeType.MERGE
+    @JoinColumn(name = "\"sourceAccountId\"", nullable = false)
     private Account sourceAccount;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "\"destinationAccountId\"", nullable = false) // Quoted identifier
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // Use CascadeType.MERGE
+    @JoinColumn(name = "\"destinationAccountId\"", nullable = false)
     private Account destinationAccount;
 
     @Min(value = 0, message = "Amount must be greater than zero")
-    @Column(name = "\"amount\"") // Quoted identifier
+    @Column(name = "\"amount\"")
     private BigDecimal amount;
 
-    @Column(name = "\"scheduledTime\"") // Quoted identifier
+    @Column(name = "\"scheduledTime\"")
     private LocalDateTime scheduledTime;
 
-    @Column(name = "\"executionTime\"") // Quoted identifier
+    @Column(name = "\"executionTime\"")
     private LocalDateTime executionTime;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "\"status\"") // Quoted identifier
+    @Column(name = "\"status\"")
     private TransferStatus status = TransferStatus.PENDING;
 
-    @Column(name = "\"createdTime\"") // Quoted identifier
+    @Column(name = "\"createdTime\"")
     private LocalDateTime createdTime;
 
-    @Column(name = "\"updatedTime\"") // Quoted identifier
+    @Column(name = "\"updatedTime\"")
     private LocalDateTime updatedTime;
 
     @Version
-    @Column(name = "\"version\"") // Quoted identifier
+    @Column(name = "\"version\"")
     private Long version;
 }
