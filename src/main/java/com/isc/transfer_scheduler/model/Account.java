@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @Table(name = "accounts", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"\"accountNumber\""}) // Quoted here!
 })
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -22,14 +23,14 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "\"accountNumber\"") // Quoted here
+    @Column(name = "\"accountNumber\"")
     private String accountNumber;
 
-    @Column(name = "\"balance\"") // Quoted here
+    @Column(name = "\"balance\"")
     private BigDecimal balance;
 
-    @Column(name = "\"username\"", nullable = false) // Add username field (quoted)
-    private String username; // Associate the account with a user
+    @Column(name = "\"username\"", nullable = false)
+    private String username;
 
     @Version
     private Long version;

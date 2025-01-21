@@ -52,4 +52,10 @@ public class TransferDto {
     )
     @NotNull(message = "Scheduled time is required")
     private LocalDateTime scheduledTime;
+
+    @Schema(
+            description = "The time when the transfer was created",
+            example = "2023-12-31T23:59:59"
+    )
+    private LocalDateTime createdTime; // Add this field
 }

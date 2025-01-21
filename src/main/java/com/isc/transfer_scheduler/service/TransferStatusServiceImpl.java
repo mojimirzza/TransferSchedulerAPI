@@ -15,19 +15,29 @@ public class TransferStatusServiceImpl implements TransferStatusService {
         this.transferRepository = transferRepository;
     }
 
-    @Override
-    @Transactional
+//    @Override
+//    @Transactional
+//    public void markTransferAsCompleted(Transfer transfer) {
+//        transfer.setStatus(TransferStatus.SUCCESS);
+//        transfer.setExecutionTime(LocalDateTime.now());
+//        transferRepository.save(transfer);
+//    }
+//
+//    @Override
+//    @Transactional
+//    public void markTransferAsFailed(Transfer transfer, String errorMessage) {
+//        transfer.setStatus(TransferStatus.FAILED);
+//        transfer.setErrorMessage(errorMessage);
+//        transferRepository.save(transfer);
+//    }
     public void markTransferAsCompleted(Transfer transfer) {
         transfer.setStatus(TransferStatus.SUCCESS);
         transfer.setExecutionTime(LocalDateTime.now());
-        transferRepository.save(transfer);
     }
 
-    @Override
-    @Transactional
     public void markTransferAsFailed(Transfer transfer, String errorMessage) {
         transfer.setStatus(TransferStatus.FAILED);
         transfer.setErrorMessage(errorMessage);
-        transferRepository.save(transfer);
     }
+
 }

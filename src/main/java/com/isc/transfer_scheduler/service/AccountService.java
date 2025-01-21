@@ -12,6 +12,8 @@ public interface AccountService {
     Optional<Account> getAccountByIdForUser(Long id, String username); // For source account (with validation)
     Optional<Account> getAccountByIdWithoutValidation(Long id); // For destination account (no validation)
     Account createAccount(AccountDto accountDto, String username);
-    void debitAccount(Long accountId, BigDecimal amount);
-    void creditAccount(Long accountId, BigDecimal amount);
+
+    BigDecimal validateAndGetBalanceForDebit(Long accountId, BigDecimal amount);
+
+    BigDecimal validateAndGetBalanceForCredit(Long accountId, BigDecimal amount);
 }

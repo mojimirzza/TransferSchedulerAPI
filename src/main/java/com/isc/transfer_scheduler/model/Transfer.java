@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
+
 @Table(name = "transfers")
 @Data
 @Builder
@@ -21,11 +22,11 @@ public class Transfer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // Use CascadeType.MERGE
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "\"sourceAccountId\"", nullable = false)
     private Account sourceAccount;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE) // Use CascadeType.MERGE
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "\"destinationAccountId\"", nullable = false)
     private Account destinationAccount;
 
@@ -46,13 +47,9 @@ public class Transfer {
     @Column(name = "\"createdTime\"")
     private LocalDateTime createdTime;
 
-    @Column(name = "\"updatedTime\"")
-    private LocalDateTime updatedTime;
-
     @Version
     @Column(name = "\"version\"")
     private Long version;
-
 
     @Column(name = "\"errorMessage\"")
     private String errorMessage;

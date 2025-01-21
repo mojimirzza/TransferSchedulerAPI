@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class SeedService {
@@ -54,19 +55,25 @@ public class SeedService {
                 logger.info("Created user: {}", username);
             }
 
-            // Create accounts
-            for (String username : usernames) {
-                for (int j = 1; j <= seedConfig.getAccountsPerUser(); j++) {
-                    AccountDto accountDto = new AccountDto();
-                    accountDto.setAccountNumber("ACC" + username + j);
-                    accountDto.setBalance(BigDecimal.valueOf(1000.0));
-                    Account account = accountService.createAccount(accountDto, username);
-                    accounts.add(account);
-                    logger.info("Created account: {}", account.getAccountNumber());
-                }
-            }
 
-            // Create transfers
+                    // Create accounts
+                    for (String username : usernames) {
+                        for (int j = 1; j <= seedConfig.getAccountsPerUser(); j++) {
+                            AccountDto accountDto = new AccountDto();
+                            accountDto.setAccountNumber("ACC" + username + j);
+                            accountDto.setBalance(BigDecimal.valueOf(new double[]{10000,20000,30000,40000,50000}[ThreadLocalRandom.current().nextInt(5)]));
+                            Account account = accountService.createAccount(accountDto, username);
+                            accounts.add(account);
+                            logger.info("Created account: {} -> {}", account.getAccountNumber(), account.getBalance());
+                        }
+                    }
+
+                    // Log initial account balances
+                    logger.info("Initial account balances:");
+                    for (Account account : accounts) {
+                        logger.info("Account {}: {}", account.getAccountNumber(), account.getBalance());
+                    }
+
             for (int i = 0; i < seedConfig.getTransfersPerAccount(); i++) {
                 for (Account sourceAccount : accounts) {
                     for (Account destinationAccount : accounts) {
@@ -74,18 +81,35 @@ public class SeedService {
                             TransferDto transferDto = new TransferDto();
                             transferDto.setSourceAccountId(sourceAccount.getId());
                             transferDto.setDestinationAccountId(destinationAccount.getId());
-                            transferDto.setAmount(BigDecimal.valueOf(100.0));
-                            transferDto.setScheduledTime(LocalDateTime.now().plusDays(1));
+                            transferDto.setAmount(BigDecimal.valueOf(new double[]{5000, 10000, 15000, 20000}[ThreadLocalRandom.current().nextInt(4)]));
+
+                            // Set createdTime to 5 minutes before now
+                            transferDto.setCreatedTime(LocalDateTime.now().minusMinutes(5));
+
+                            // Set scheduledTime to 2 minutes before now
+                            transferDto.setScheduledTime(LocalDateTime.now().minusMinutes(2));
+
+                            // Log transfer details
+                            logger.info("Creating transfer: {} -> {} (Amount: {})",
+                                    sourceAccount.getAccountNumber(), destinationAccount.getAccountNumber(), transferDto.getAmount());
+
+                            // Create the transfer
                             Transfer transfer = transferService.createTransfer(transferDto, sourceAccount.getUsername());
+
                             logger.info("Created transfer: {} -> {}", sourceAccount.getAccountNumber(), destinationAccount.getAccountNumber());
                         }
                     }
                 }
             }
 
+
+
+
             logger.info("Seeding process completed successfully.");
         } catch (Exception e) {
             logger.error("Error during seeding process: {}", e.getMessage(), e);
         }
     }
+
+
 }
