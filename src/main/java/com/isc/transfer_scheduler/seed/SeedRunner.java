@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("staging") // Run only in the "staging" profile
+@Profile("eee") // Run only in the "staging" profile
 public class SeedRunner implements CommandLineRunner {
     private final SeedService seedService;
 

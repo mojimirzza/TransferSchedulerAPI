@@ -1,5 +1,6 @@
 package com.isc.transfer_scheduler.controller;
 
+import com.isc.transfer_scheduler.event.TransferCreatedEvent;
 import com.isc.transfer_scheduler.exception.AccountNotFoundException;
 import com.isc.transfer_scheduler.exception.InsufficientBalanceException;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,9 +28,11 @@ import org.springframework.web.bind.annotation.*;
 public class TransferController {
     private static final Logger logger = LoggerFactory.getLogger(TransferController.class);
     private final TransferService transferService;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public TransferController(TransferService transferService) {
+    public TransferController(TransferService transferService, ApplicationEventPublisher eventPublisher) {
         this.transferService = transferService;
+        this.eventPublisher = eventPublisher;
     }
 
     @PostMapping
@@ -56,6 +60,8 @@ public class TransferController {
         try {
             String username = userDetails.getUsername();
             Transfer transfer = transferService.createTransfer(transferDto, username);
+            // Publish the event
+            eventPublisher.publishEvent(new TransferCreatedEvent(this, transfer));
             logger.info("Transfer created successfully: {}", transfer);
             return ResponseEntity.ok(transfer);
         } catch (AccountNotFoundException ex) {
